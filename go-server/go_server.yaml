@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+
+metadata: 
+  name: go-server
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+      - {key: env, operator: In, values: [prod, canary]}
+      - {key: build, operator: NotIn, values: [debug]}
+  template: 
+    metadata:
+      labels:
+        env: prod
+        app: go-server
+    spec:
+      containers:
+      - image: "dockerhub.vagrant.info/library/go_server:v1.0.0"
+        name: go-server
+        ports:
+        - name: http0
+          containerPort: 6060
+        - name: http1
+          containerPort: 8080
+      terminationGracePeriodSeconds: 2

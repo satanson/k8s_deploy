@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+
+metadata: 
+  name: busybox-client
+spec:
+  replicas: 1
+  selector:
+    matchExpressions:
+      - {key: env, operator: In, values: [prod, canary]}
+      - {key: build, operator: NotIn, values: [debug]}
+  template: 
+    metadata:
+      labels:
+        env: prod
+    spec:
+      containers:
+      - image: "dockerhub.vagrant.info/library/busybox"
+        name: busybox
+        command: ["sleep", "10000000"]
+      terminationGracePeriodSeconds: 2

@@ -1,0 +1,65 @@
+openssl x509 -in ca.pem -text -noout
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            0a:c3:e6:47:e8:c1:4a:d1:e0:b4:8d:ba:56:4e:3f:28:aa:f9:6c:99
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C = CN, ST = Zhejiang, L = Hangzhou, O = grakra.com, OU = foobar, CN = ca.grakra.com
+        Validity
+            Not Before: Jan 11 15:59:00 2020 GMT
+            Not After : Jan  8 15:59:00 2030 GMT
+        Subject: C = CN, ST = Zhejiang, L = Hangzhou, CN = server
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+                Modulus:
+                    00:cc:38:8a:b0:a2:9c:b8:22:ec:8f:09:43:2f:66:
+                    05:b0:e5:4c:52:80:90:93:2a:6c:6d:09:1b:ef:51:
+                    b8:b2:34:ff:8c:ba:ef:3e:c7:82:a5:c3:79:0f:36:
+                    d8:ef:1d:d8:49:03:fc:93:32:c7:11:ae:0c:07:40:
+                    ef:4f:84:a1:f2:fe:79:c4:20:0f:12:fb:b1:4c:e3:
+                    c5:bd:ce:43:bd:17:34:d1:8b:f6:57:90:82:6b:c0:
+                    ef:01:b4:b9:00:fc:db:3f:44:1a:1f:41:4a:8f:9b:
+                    f0:1b:e7:01:bc:ab:e9:2e:cf:1b:2b:1d:30:61:56:
+                    94:9b:73:e0:b6:ea:e5:58:a7:ad:3c:13:d7:ee:df:
+                    bd:dc:12:00:bc:30:3e:39:78:13:36:1e:3e:55:94:
+                    ad:95:5f:0d:dd:29:21:fc:45:3d:bd:6c:dd:5f:ba:
+                    29:e5:85:14:44:22:5e:2c:4e:a0:e5:29:fd:7e:7b:
+                    1a:05:b8:7e:42:67:d8:41:f6:34:d9:9d:87:35:d0:
+                    04:95:7a:9b:c0:e6:7e:6a:07:9b:2d:42:73:03:05:
+                    9c:3a:c2:a4:8d:1f:1b:b2:e0:73:42:51:54:70:2e:
+                    00:8f:62:c6:bc:bd:78:f2:bb:0b:b7:21:2f:b4:ce:
+                    8c:2e:7f:65:c2:c4:f7:e2:29:b8:d4:2a:88:e5:cc:
+                    cf:fb
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication
+            X509v3 Basic Constraints: critical
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                3A:28:8A:14:FF:64:00:79:B1:80:58:70:08:B8:61:22:AB:F1:04:07
+            X509v3 Authority Key Identifier: 
+                keyid:A9:F2:52:E4:39:83:1D:5B:46:43:2C:F6:45:F0:CE:F1:77:CB:96:3A
+
+            X509v3 Subject Alternative Name: 
+                IP Address:127.0.0.1, IP Address:192.168.139.10, IP Address:192.168.139.11, IP Address:192.168.139.12
+    Signature Algorithm: sha256WithRSAEncryption
+         ad:8c:22:21:36:64:0a:84:50:0b:d2:32:54:77:8d:cb:53:c6:
+         fd:4d:12:4a:ea:b2:bc:bf:f8:cd:c1:3d:96:2c:b9:6d:47:42:
+         95:b7:fd:1e:be:ba:15:aa:f6:56:72:5b:84:15:2b:8a:22:ff:
+         fb:64:7f:08:19:d6:76:84:c9:99:33:f1:3e:10:24:d5:91:b8:
+         72:92:43:64:28:e4:d5:a4:d1:fc:4c:d3:0f:97:58:ef:5c:1d:
+         3c:da:85:09:2e:47:f3:cb:f4:cb:f8:e3:c2:1e:c5:e1:12:85:
+         b1:dd:a0:6f:67:e7:82:b3:12:b0:90:cf:f7:ea:f3:4b:fc:16:
+         87:f8:ed:cb:88:c9:6f:ac:f6:89:39:a9:bd:37:4a:b9:68:3a:
+         56:50:a4:48:2d:7b:38:3e:e2:42:ef:bc:d4:3f:a2:13:b3:7d:
+         30:7c:a1:12:ba:20:a3:5d:3a:82:23:65:96:3a:f9:b7:25:cc:
+         90:64:f5:40:ad:3e:ed:88:50:bf:bb:39:9c:41:af:95:de:76:
+         9d:3e:b6:27:4c:7f:df:31:b8:6b:71:a0:70:23:0f:41:c7:73:
+         33:48:2f:31:c6:7d:79:61:7a:87:a8:e2:54:c2:51:ef:58:f2:
+         ed:c0:11:da:2e:e1:21:c3:cb:d9:ce:89:c2:8d:25:cb:80:3e:
+         5f:f5:3e:42

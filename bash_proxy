@@ -1,0 +1,8 @@
+#!/bin/sh
+export http_proxy=http://127.0.0.1:7777
+export https_proxy=$http_proxy
+export ftp_proxy=$http_proxy
+export rsync_proxy=$http_proxy
+export NO_PROXY="localhost,127.0.0.1,10.,192.168.,192.168.139."
+/bin/bash
+PS1='(proxy)\[\033[01;32m\][\u\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '

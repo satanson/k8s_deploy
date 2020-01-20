@@ -1,0 +1,25 @@
+[Unit]
+Description=Ceph object storage daemon osd.%i
+After=network-online.target local-fs.target time-sync.target ceph-mon.target
+Wants=network-online.target local-fs.target time-sync.target
+PartOf=ceph-osd.target
+
+[Service]
+LimitNOFILE=1048576
+LimitNPROC=1048576
+EnvironmentFile=-/etc/sysconfig/ceph
+Environment=CLUSTER=ceph
+
+ExecStart=/opt/ceph_scripts/run_docker.sh ceph-osd.%i /opt/ceph_scripts/start_ceph_osd.sh %i
+ExecReload=/usr/bin/docker kill ceph-osd.%i
+ProtectHome=true
+ProtectSystem=full
+PrivateTmp=true
+TasksMax=infinity
+Restart=on-failure
+StartLimitInterval=30min
+StartLimitBurst=30
+RestartSec=20s
+
+[Install]
+WantedBy=ceph-osd.target
