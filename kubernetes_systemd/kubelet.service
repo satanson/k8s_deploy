@@ -5,18 +5,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-WorkingDirectory=/var/lib/kubelet
-EnvironmentFile=-/opt/kubernetes/etc/config
-EnvironmentFile=-/opt/kubernetes/etc/kubelet
-ExecStart=/opt/kubernetes/bin/kubelet \
-	    $KUBE_LOGTOSTDERR \
-	    $KUBE_LOG_LEVEL \
-	    $KUBELET_API_SERVER \
-	    $KUBELET_ADDRESS \
-	    $KUBELET_PORT \
-	    $KUBELET_HOSTNAME \
-	    $KUBE_ALLOW_PRIV \
-	    $KUBELET_ARGS
+ExecStart=/opt/kubernetes/scripts/start_kubelet.sh
 Restart=on-failure
 KillMode=process
 

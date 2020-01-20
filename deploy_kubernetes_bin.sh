@@ -14,11 +14,12 @@ for bin in kube-apiserver kube-scheduler kube-controller-manager kubelet kube-pr
   cp ${binDir}/${bin} kubernetes_bin/
 done
 
-${basedir}/deliver.sh hosts/k8s.list kubernetes_bin /opt/kubernetes/bin sudo kube 0550
+${basedir}/deliver.sh hosts/k8s.list kubernetes_bin /opt/kubernetes/bin sudo kube 0750
 
 mkdir -p cni_bin
 cp ${goPath}/src/github.com/containernetworking/plugins/bin/loopback cni_bin/
 cp ${goPath}/src/github.com/projectcalico/cni-plugin/cmd/calico-ipam/calico-ipam cni_bin/
 cp ${goPath}/src/github.com/projectcalico/cni-plugin/cmd/calico/calico cni_bin/
-${basedir}/deliver.sh hosts/k8s.list cni_bin /opt/kubernetes/cni/bin sudo kube 0550
+${basedir}/deliver.sh hosts/k8s.list cni_bin /opt/kubernetes/cni/bin sudo kube 0750
 ./doall.sh hosts/k8s.list "sudo chown -R kube:kube /opt/kubernetes/cni"
+./doall.sh hosts/k8s.list "sudo mkdir -p /opt/kubernetes/kubelet; sudo mkdir -p /opt/kubernetes/run"
