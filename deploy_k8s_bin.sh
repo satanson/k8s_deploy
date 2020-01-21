@@ -24,5 +24,8 @@ cp ${goPath}/src/github.com/containernetworking/plugins/bin/loopback cni_bin/
 cp ${goPath}/src/github.com/projectcalico/cni-plugin/cmd/calico-ipam/calico-ipam cni_bin/
 cp ${goPath}/src/github.com/projectcalico/cni-plugin/cmd/calico/calico cni_bin/
 ${basedir}/deliver.sh ${hostList} cni_bin /opt/kubernetes/cni/bin sudo kube 0750
-./doall.sh ${hostList} "sudo chown -R kube:kube /opt/kubernetes/cni"
-./doall.sh ${hostList} "sudo mkdir -p /opt/kubernetes/kubelet; sudo mkdir -p /opt/kubernetes/run"
+./doall.sh ${hostList} "\
+  sudo chown -R kube:kube /opt/kubernetes/cni; \
+  sudo mkdir -p /opt/kubernetes/kubelet; \
+  sudo mkdir -p /opt/kubernetes/run; \
+  "

@@ -36,7 +36,6 @@ KUBELET_EXTRA_ARGS="--cluster-dns=10.65.0.100 \
   --feature-gates=CRIContainerLogRotation=true \
   --runtime-cgroups=/sys/fs/cgroup/systemd/user.slice/user-1000.slice/session-49.scope \
   --root-dir=/opt/kubernetes/kubelet \
-  --allow-privileged=true \
   --container-runtime-endpoint=unix:///opt/kubernetes/run/dockershim.sock"
 
 KUBE_ARGS="\
