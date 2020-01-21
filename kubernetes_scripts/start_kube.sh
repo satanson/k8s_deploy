@@ -7,14 +7,16 @@ service=${1:?"missing 'service'"};shift
 
 source ${basedir}/functions.sh
 checkArgument service ${service} "kube-apiserver|kube-scheduler|kube-controller-manager|kubelet|kube-proxy"
-bindir=$(cd ${basedir}/../bin;pwd)
-logdir=$(cd ${basedir}/../logs;pwd)
-
+bindir=${basedir}/../bin
+test -d ${bindir}
+bindir=$(readlink -f ${bindir})
+logdir=${basedir}/../logs
 if [ ! -d ${logdir} ];then
   mkdir -p ${logdir}
 fi
+logdir=$(readlink -f ${logdir})
+test -d ${logdir}
 
-kubeEnvFile=${basedir}/kube-env.sh
 servEnvFile=${basedir}/${service}-env.sh
 stdout=${logdir}/${service}.stdout
 stderr=${logdir}/${service}.stderr
@@ -22,26 +24,19 @@ KUBE_CMD=${bindir}/${service}
 
 unset -- KUBE_ARGS
 
-if [ -f ${kubeEnvFile} ];then
-  source ${kubeEnvFile}
-else
-  echo "ERROR: ${kubeEnvFile} not exist" >&2
-  exit 1
-fi
-
 if [ -f ${servEnvFile} ];then
-  source ${kubeEnvFile}
+  source ${servEnvFile}
 else
   echo "ERROR: ${servEnvFile} not exist" >&2
   exit 1
 fi
 
-if [ -n "${KUBE_ARGS}" ];then
+if [ -z "${KUBE_ARGS}" ];then
   echo "ERROR: empty KUBE_ARGS" >&2
   exit 1
 fi
 
-if [ -f "${KUBE_CMD}" ];then
+if [ ! -f "${KUBE_CMD}" ];then
   echo "ERROR: ${KUBE_CMD} not exist" >&2
   exit 1
 fi

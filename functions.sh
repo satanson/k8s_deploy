@@ -199,3 +199,17 @@ min(){
   done
   echo $m
 }
+
+ipList() {
+  local hostList=${1:?"missing 'hostList'"};shift
+  local isIpList=$(perl -e "print qq/OK/ if qq{${hostList}} =~ /^(\\d+(\\.\\d+){3})(,\\d+(\\.\\d+){3})*$/")
+  local isFile=$([ -f ${hostList} ] && echo OK)
+  if [ "x${isIpList}x" = "xOKx" ];then
+    echo ${hostList} | perl -aF',' -lne 'print join " ", @F'
+  elif [ "x${isFile}x" = "xOKx" ];then
+    cat ${hostList}
+  else
+    echo "ERROR: invalid hostList: '${hostList}'" >&2
+    exit 1
+  fi
+}
