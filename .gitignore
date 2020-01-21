@@ -19,4 +19,5 @@ ceph_conf/ceph.client.admin.keyring
 !ceph_conf/ceph.conf
 ceph_conf/ceph.mon.keyring
 ceph_conf/monmap
-
+go-server
+stunnel
