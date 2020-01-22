@@ -10,6 +10,9 @@ hostList=${1:?"missing 'hostList'"};shift
 ./deploy_k8s_etc.sh ${hostList}
 ./deploy_k8s_scripts.sh ${hostList}
 ./deploy_k8s_systemd.sh ${hostList}
+
+./restart_calico.sh ${hostList}
+
 ./doall.sh ${hostList} "\
   sudo rm -fr /opt/kubernetes/logs; \
   sudo -iu kube mkdir -p /opt/kubernetes/logs; \
