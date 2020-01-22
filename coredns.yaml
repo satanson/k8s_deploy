@@ -1,0 +1,229 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health {
+          lameduck 5s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+          endpoint https://192.168.139.10:6443
+          tls /etc/coredns/client.pem /etc/coredns/client-key.pem /etc/coredns/ca.pem 
+          fallthrough in-addr.arpa ip6.arpa
+        }
+        prometheus :9153
+        forward . 8.8.8.8
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+  ca.pem: |
+    -----BEGIN CERTIFICATE-----
+    MIID1jCCAr6gAwIBAgIUdAQVRlnslijr0WEwgO/LQGp3JcMwDQYJKoZIhvcNAQEL
+    BQAwcTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQHEwhI
+    YW5nemhvdTETMBEGA1UEChMKZ3Jha3JhLmNvbTEPMA0GA1UECxMGZm9vYmFyMRYw
+    FAYDVQQDEw1jYS5ncmFrcmEuY29tMB4XDTIwMDExMTE1MzgwMFoXDTI1MDEwOTE1
+    MzgwMFowcTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQH
+    EwhIYW5nemhvdTETMBEGA1UEChMKZ3Jha3JhLmNvbTEPMA0GA1UECxMGZm9vYmFy
+    MRYwFAYDVQQDEw1jYS5ncmFrcmEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+    MIIBCgKCAQEAuMQjJhf0ES7bMzqCDug0IJ6cSplGzyHCT5B+51niUHiX5C4RG1+r
+    t6/I9VE5t33S44JU55mm7+8AXtMxCvtoJp7RB7LYENermn6kSmX56blGkyS5ar22
+    5pdJSszZH5sJQCodoVkJb19e4fFh/cgfW98Ko5SO5QPUNhsUcBoQX+hanNCgaL+4
+    Jgs77SOsJBHZMYlLjjFvjtDAIOhI/sDYTVm7oeZkeI8DyTpFoYvGVY9vq2ktVvxr
+    Wu3PjRUoqeHAJOcsxEayMWESXBDn4lBsp4OrH4K+NHi8DjxwE7aLMScvGDegc0gT
+    0PHrw91bMd99qkEeOFr8ogFeNVBX81FphQIDAQABo2YwZDAOBgNVHQ8BAf8EBAMC
+    AQYwEgYDVR0TAQH/BAgwBgEB/wIBAjAdBgNVHQ4EFgQUqfJS5DmDHVtGQyz2RfDO
+    8XfLljowHwYDVR0jBBgwFoAUqfJS5DmDHVtGQyz2RfDO8XfLljowDQYJKoZIhvcN
+    AQELBQADggEBAJbIg/KCsJNSx16oc6sJx98Yr1F+Q78uosKeefAM/iBUpkrCzCRC
+    cfa95GMbgf03g6p2LR/RDKCcCSGgW5ZT1HYgA1Z398k5097j2MADzd1VnetN+BRe
+    EWjog/qpX7SF+5ftFMSOm1FcCcgzc32pX5ZgTcWj0jef8PAn9ncRrD05dWaFc7aP
+    je43mFlO28xzFB3UQxeRCOmSfzF5DmBZ486klx6uiG5Fz6SD2goGsU6wV/14qv33
+    EzRsHUaz4Fw2fMTmJJt+B5Gm7Ik5vmPjC5NsS8Ty81jBwW1tQjXn+jyZGJdmFxmX
+    7c9j5PvhjLI4AJL5j/RldAANP14mG5R/diw=
+    -----END CERTIFICATE-----
+  client.pem: |
+    -----BEGIN CERTIFICATE-----
+    MIID6DCCAtCgAwIBAgIUWF82ymdA/LuV5kE4/PPu04zIsJ8wDQYJKoZIhvcNAQEL
+    BQAwcTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQHEwhI
+    YW5nemhvdTETMBEGA1UEChMKZ3Jha3JhLmNvbTEPMA0GA1UECxMGZm9vYmFyMRYw
+    FAYDVQQDEw1jYS5ncmFrcmEuY29tMB4XDTIwMDExODA4MzkwMFoXDTMwMDExNTA4
+    MzkwMFowRTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQH
+    EwhIYW5nemhvdTEQMA4GA1UEAxMHa3ViZWN0bDCCASIwDQYJKoZIhvcNAQEBBQAD
+    ggEPADCCAQoCggEBALPzK1Jmpw43prEvs86aJaCvadZJtXJCM4gb2jtSTF85uHkk
+    WWoWhiBGOXxU3yFtPr9E7NCqaUnxbpzhgCivmQtxUSWKzUGSh6nM6QHxovBYNjLB
+    x+TNvFfRqoYhXx+8WBlulRPqnIQCtI2qE4jWlbc7SjiDeXNZFFoRpVea0kvATkT8
+    Z1jdSvoO1yMTbWJ8+PYKMfifNB2cJ1QkEa3iibnwcaAZgH9+s+vl1UcgO8VbP702
+    PfPGRznVIR3DfFqGRCyMeqH/CB898xVxDrc6SipR2Y3RyekFbhTWZ3p9irSubNxE
+    ZSQLVjuNrqvIwIOilmN8VlpyWEMS3nAQKzUwel8CAwEAAaOBozCBoDAOBgNVHQ8B
+    Af8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB
+    /wQCMAAwHQYDVR0OBBYEFD7n7zojKgYHNwgQ04Jg3BZLjPciMB8GA1UdIwQYMBaA
+    FKnyUuQ5gx1bRkMs9kXwzvF3y5Y6MCEGA1UdEQQaMBiHBH8AAAGHBMCoiwqHBMCo
+    iwuHBMCoiwwwDQYJKoZIhvcNAQELBQADggEBAGqUrq/rhrD/GB+AKRodJ1lRGIrt
+    lb/KgcHlf60U9Sjv2r3UKNgXZ2+xCZVBl/ZUgHQYmmr6UldO+1kbG2QIyEQAPLix
+    qAn+QCGZPnGMq6skT7ybVk7rVPG6tC4h85klvoyuz7y84oBf6tBubJe3y73TNvVU
+    kM2g+u8DpDi+4nPrW4T0RvXFzwWS2FPG8cFUk/MaBtJAVkUUW+kwcFGvgL6Ba/tl
+    rO7+Ybp55i1Nrl/22XS1os46VfKsZ3VR5XQHb4bGmE//G2eq8IYVN5ktARiWHBif
+    1GhlOjZFLC0o1VIDkAqgw7Uas4jnr98tBHKtaBvfeGlAPyD0vitBFPcE4zo=
+    -----END CERTIFICATE-----
+  client-key.pem: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpQIBAAKCAQEAs/MrUmanDjemsS+zzpoloK9p1km1ckIziBvaO1JMXzm4eSRZ
+    ahaGIEY5fFTfIW0+v0Ts0KppSfFunOGAKK+ZC3FRJYrNQZKHqczpAfGi8Fg2MsHH
+    5M28V9GqhiFfH7xYGW6VE+qchAK0jaoTiNaVtztKOIN5c1kUWhGlV5rSS8BORPxn
+    WN1K+g7XIxNtYnz49gox+J80HZwnVCQRreKJufBxoBmAf36z6+XVRyA7xVs/vTY9
+    88ZHOdUhHcN8WoZELIx6of8IHz3zFXEOtzpKKlHZjdHJ6QVuFNZnen2KtK5s3ERl
+    JAtWO42uq8jAg6KWY3xWWnJYQxLecBArNTB6XwIDAQABAoIBAQCdGMdTUqa49MCj
+    ox94WH5M/5aIKyUqsLzIMHienURrRbrUl3Uv9qX1exkof/ej+Pl0hbmwmXT9xrZo
+    Yz09R792i+Dpw3lZq5CgHnG07rzu0jPOr/nQuAObL0GNg4jF7emDmlSvZHxriukR
+    W89eAOgHZM1w9OaMWtI3p3wPNOwukCaJHZLk5mVlAI9iknewyRgahCPYMixIEvQ9
+    895GuGgb4EUT6wfT4Xu7ojZb1FvRjK9TbIcSsakJPMJutHSsPAkU6T21u1jEqN6W
+    VmdEqkW0AuhAo+5Iv+Gs25EBH1LWdFMPlkMRt+qrSEBwJwoWowZ68oPyLSXWGnW0
+    rIWR+MqBAoGBAOaxq87wAaNY7ti6P1EPLYNICSsS1uHCi2T0uzlCuhYAV7Hmt2cC
+    gVkZ1Dc9zIE09/9tw56T7piaeDkr1Sw5HQ9P24hBPwfi1uJnDXV00f7n1R7nqmOE
+    bTfLuJyTObBqn/cT8JgCPtpIq0MtGhVs1Fm4oiySvDHD3zotJVsHeLT/AoGBAMew
+    gWlM+f/CrKi+9kRrbtkqePwakBNz/dAoqPHt3KteIzy4kYC327xShV7wFowHxa0A
+    sIK5P01adSZkf8nXQe7Z1ccLD1kkkIBycfaeOYjYMKB3edCYTy2zSf3a57u63FAX
+    IAUwEVpU3IPQ6CC7c1/M/NYGUBatvAXqS7FEW1qhAoGBAIwgX7vTDSurWWlLuCoE
+    jiCwIOGJD/0RrpokDZU6cs3qZ1ooSj7HxsnYZo8nepEBG6KLicdJFCSdr2kKtvGl
+    v4ENgMvC1gZ0QxJChmpSCzxKlamwDk9koPLDS9/PjbsbCQ+LjRjIRGVSvrSPMMjS
+    0imtfNSWTLntwCoWQhqI70kBAoGAAKCvZ3NUfddQz576CzEDQi99/dzfgxAkRhk6
+    nrgOr4M2PSSfYHYzfJ4NyUSb7YjAuFB+PYrzhfy4zYwXUr0YefW5VEzWmYMh6SVy
+    8kGBEMsNLBP0EBHKfexIWUHs5Iwr0RyhfyKti0klAE0RzbiJHk34pXuTmN6m7qXT
+    4xTB7MECgYEAntakWKql5CM/biM4XySIXOxEh/TRtY1IUXYw4uZW6yAPCIjs5YqF
+    xe48fKI1f8s0NiO7bvrszUI9WkftOsTSjYf4ReJlQvI+rzuY+FcaCf21Y4uV+eTR
+    sIhPdATm8vdct8VFS71+zX4nHfokrwl1Tb2M2azUYb1AWQ2dyn6eZTA=
+    -----END RSA PRIVATE KEY-----
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coredns
+  namespace: kube-system
+  labels:
+    k8s-app: kube-dns
+    kubernetes.io/name: "CoreDNS"
+spec:
+  # replicas: not specified here:
+  # 1. Default is 1.
+  # 2. Will be tuned in real time if DNS horizontal auto-scaling is turned on.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      k8s-app: kube-dns
+  template:
+    metadata:
+      labels:
+        k8s-app: kube-dns
+    spec:
+      priorityClassName: system-cluster-critical
+      tolerations:
+        - key: "CriticalAddonsOnly"
+          operator: "Exists"
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values: ["kube-dns"]
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - name: coredns
+        image: coredns/coredns:1.6.6
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 170Mi
+          requests:
+            cpu: 100m
+            memory: 70Mi
+        args: [ "-conf", "/etc/coredns/Corefile" ]
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/coredns
+          readOnly: true
+        ports:
+        - containerPort: 53
+          name: dns
+          protocol: UDP
+        - containerPort: 53
+          name: dns-tcp
+          protocol: TCP
+        - containerPort: 9153
+          name: metrics
+          protocol: TCP
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
+            drop:
+            - all
+          readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8181
+            scheme: HTTP
+      dnsPolicy: Default
+      volumes:
+        - name: config-volume
+          configMap:
+            name: coredns
+            items:
+            - key: Corefile
+              path: Corefile
+            - key: ca.pem
+              path: ca.pem
+            - key: client.pem
+              path: client.pem
+            - key: client-key.pem
+              path: client-key.pem
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-dns
+  namespace: kube-system
+  annotations:
+    prometheus.io/port: "9153"
+    prometheus.io/scrape: "true"
+  labels:
+    k8s-app: kube-dns
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "CoreDNS"
+spec:
+  selector:
+    k8s-app: kube-dns
+  clusterIP: 10.65.0.100
+  ports:
+  - name: dns
+    port: 53
+    protocol: UDP
+  - name: dns-tcp
+    port: 53
+    protocol: TCP
+  - name: metrics
+    port: 9153
+    protocol: TCP
