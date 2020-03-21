@@ -1,47 +1,33 @@
 #!/bin/bash
 set -e -o pipefail
+basedir=$(cd $(dirname $(readlink -f ${BASH_SOURCE:-$0}));pwd)
+cd ${basedir}
 
-tar czvf ceph_scripts.tgz ceph_scripts
-tar czvf ceph_conf.tgz ceph_conf
-
-./upload.sh hosts/k8s.list ceph_scripts.tgz
-./upload.sh hosts/k8s.list ceph_conf.tgz
+${basedir}/deliver.sh hosts/k8s.list ceph_conf /etc/ceph sudo root 0755
 
 cat >scripts/deploy_osd.sh <<'DONE'
 #!/bin/bash
-rm -fr  /etc/systemd/system/ceph-osd*
-set -x -e -o pipefail
-test -f /tmp/ceph_conf.tgz
-test -f /tmp/ceph_scripts.tgz
-
-pushd /opt
-[ -d ceph_scripts.bak ] && rm -fr ceph_scripts.bak
-[ -d ceph_scripts ] && mv ceph_scripts ceph_scripts.bak
-tar xzvf /tmp/ceph_scripts.tgz
-popd
-
-pushd /etc
-[ -d ceph.bak ] && rm -fr ceph.bak
-[ -d ceph ] && mv ceph ceph.bak
-tar xzvf /tmp/ceph_conf.tgz
-mv ceph_conf ceph
-popd
 
 systemctl daemon-reload
 set +e +o pipefail
+systemctl stop ceph-osd.target
+systemctl stop ceph-osd@.service
 systemctl disable ceph-osd.target
 systemctl disable ceph-osd@.service
+for id in $(ls /var/lib/ceph|perl -lne 'print $1 if /^osd-(\d+)$/');do
+  systemctl stop ceph-osd@${id}
+  systemctl disable ceph-osd@${id}
+done
+
 set -e +o pipefail
 
-systemctl enable /opt/ceph_scripts/ceph-osd.target
-systemctl enable /opt/ceph_scripts/ceph-osd@.service
+systemctl enable ceph-osd.target
 
 for dev in $(ls /dev/nvme0n*);do
   /opt/ceph_scripts/run_docker.sh none /opt/ceph_scripts/bootstrap_ceph_osd.sh ${dev}
 done
 
 for id in $(ls /var/lib/ceph|perl -lne 'print $1 if /^osd-(\d+)$/');do
-  systemctl disable ceph-osd@${id}
   systemctl enable ceph-osd@${id}
   systemctl start ceph-osd@${id}
   systemctl restart ceph-osd@${id}

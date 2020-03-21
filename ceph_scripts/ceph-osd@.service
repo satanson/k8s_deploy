@@ -5,6 +5,7 @@ Wants=network-online.target local-fs.target time-sync.target
 PartOf=ceph-osd.target
 
 [Service]
+User=root
 LimitNOFILE=1048576
 LimitNPROC=1048576
 EnvironmentFile=-/etc/sysconfig/ceph

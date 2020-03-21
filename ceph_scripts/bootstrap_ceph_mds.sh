@@ -7,8 +7,9 @@ host=$(hostname)
 id=${host}
 
 cluster=$(perl -ne 'print $1 if /^\s*cluster\s*=\s*(\w+)\s*$/' /etc/ceph/ceph.conf)
-mds_data=/home/ceph/mon/${cluster}-${id}
-keyring=/etc/ceph/${cluster}.mds.${id}.keyring
+test -d /var/lib/ceph
+mds_data=/var/lib/ceph/mds/${cluster}-${id}
+keyring=/var/lib/ceph/mds/${cluster}-${id}/keyring
 mkdir -p ${mds_data}
 rm -fr ${mds_data:?"undefined"}/*
 
