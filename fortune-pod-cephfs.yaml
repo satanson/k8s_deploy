@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: fortune-cephfs
+
+spec:
+  containers:
+  - image: dockerhub.vagrant.info/luksa/fortune
+    name: html-generator-cephfs
+    volumeMounts:
+    - name: cephfs
+      mountPath: /var/htdocs
+    imagePullPolicy: IfNotPresent
+  - image: dockerhub.vagrant.info/library/nginx:alpine
+    name: web-server-cephfs
+    volumeMounts:
+    - name: cephfs
+      mountPath: /usr/share/nginx/html
+      readOnly: true
+    ports:
+    - containerPort: 80
+      protocol: TCP
+    imagePullPolicy: IfNotPresent
+  volumes:
+  - name: cephfs
+    cephfs:
+      monitors:
+      - 192.168.139.10:6789
+      - 192.168.139.11:6789
+      - 192.168.139.12:6789
+      user: cephfs
+      path: /
+      secretRef:
+        name: ceph-secret

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cephrbd-secret
+  namespace: kube-system
+type: kubernetes.io/rbd
+data:
+  key: QVFEeGFIUmV0MklvRVJBQVJjRDZFSHprek56TXc2WmhtSWcvV2c9PQo=
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cephrbd-secret-user
+type: kubernetes.io/rbd
+data:
+  key: QVFEeGFIUmV0MklvRVJBQVJjRDZFSHprek56TXc2WmhtSWcvV2c9PQo=
+
+---
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast
+provisioner: kubernetes.io/rbd
+parameters:
+  monitors: 192.168.139.10:6789,192.168.139.11:6789,192.168.139.12:6789
+  adminId: admin
+  adminSecretName: cephrbd-secret
+  adminSecretNamespace: kube-system
+  pool: kube
+  userId: admin
+  userSecretName: cephrbd-secret-user
+  userSecretNamespace: default
+  fsType: ext4
+  imageFormat: "2"
+  imageFeatures: "layering"
