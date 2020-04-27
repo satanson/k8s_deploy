@@ -18,9 +18,9 @@ KUBE_APISERVER_ENDPOINT="\
   --advertise-address=${ip} \
   --bind-address=0.0.0.0 \
   --secure-port=6443 \
-  --client-ca-file=/opt/kubernetes_tls/ca.pem \
-  --tls-cert-file=/opt/kubernetes_tls/apiserver.pem \
-  --tls-private-key-file=/opt/kubernetes_tls/apiserver-key.pem \
+  --client-ca-file=/opt/kubernetes/tls/ca.pem \
+  --tls-cert-file=/opt/kubernetes/tls/apiserver.pem \
+  --tls-private-key-file=/opt/kubernetes/tls/apiserver-key.pem \
   --insecure-bind-address=127.0.0.1 \
   --insecure-port=8080 \
 "

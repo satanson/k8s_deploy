@@ -29,9 +29,9 @@ op_cluster(){
   echo "choose [$(green_print HOST LIST)]:"
   local hostList=$(selectOption $(find hosts -type f))
 
-  echo "exec [$(yellow_print ${cmd}_k8s.sh )]:"
+  echo "exec [$(yellow_print systemctl_k8s.sh ${hostList} ${cmd} )]:"
   confirm
-  ./${cmd}_k8s.sh ${hostList}
+  ./systemctl_k8s.sh ${hostList} ${cmd}
 }
 
 op_service(){
