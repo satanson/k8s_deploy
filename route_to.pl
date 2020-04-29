@@ -23,7 +23,7 @@ sub padding($$){
   substr $p.(" " x $l), 0, $l;
 }
 
-my $ip=shift;
+my $ip=shift or die "missing 'target ip'";
 my @entries = grep /^\d+(\.\d+){3}/, map {chop;$_} qx(route -n);
 
 #print join "\n", @entries, "\n";
@@ -50,12 +50,18 @@ $entries = [sort {
 my %selected = map {$_=>1} grep {route_match $ip, $entries->[$_][MASK], $entries->[$_][DEST]} 0..@$entries-1;
 
 printf "%s\t%s\t%s\t\t%s\t%s\t%s\t%s\t%s\n", padding("destination", 15), padding("gateway", 15), padding("netmask", 15), "flags", "metric", "ref", "use","iface";
+my $isFirst=1;
 for (0..@$entries-1) {
   #print "@$_", "\n";
   my ($beg, $end)=("","");
   if (exists $selected{$_}){
-    ($beg, $end)=("\e[32;100;1m", "\e[m");
-  }
+    if (defined($isFirst)){
+      ($beg, $end)=("\e[92;100;1m", "\e[m");
+      $isFirst=undef;
+    } else {
+      ($beg, $end)=("\e[93;40;1m", "\e[m");
+    }
+  } 
   my $e = $entries->[$_];
   printf "$beg%s\t%s\t%s\t\t%s\t%s\t%s\t%s\t%s\n$end", padding($e->[0],15), padding($e->[1],15), padding($e->[2],15), $e->[3], $e->[4], $e->[5], $e->[6], $e->[7];
 }
